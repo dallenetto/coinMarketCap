@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.50/css/bootstrap.min.css" type="text/css">
+    <title>CrypCoin</title>
+</head>
+<body>
+    <script type="text/javascript">
+    
+    //key
+    let apiKey = { key: '118add1b-cc8c-40f1-a9bc-8fd94dbe8bb6' }
+
+    fetch('https://pro-api.coinmarketcap.com/v1/cryptocurrency/map?CMC_PRO_API_KEY='+ apiKey.key)
+    .then( (response) => {
+        if(!response.ok) throw new Error ('Erro ao executar a requisição, satus: ' + response.status);
+        return response.json();
+    })
+    .then( (api) => {
+            console.log(api);
+
+            var texto = "", topCoin="";
+            //Get coins and symbols           
+
+            for(let i = 0; i < 10; i++){
+            
+                //show api
+
+                texto = texto + `
+                    <div class="media">
+                        
+                        <div class="media-body">
+                            
+                            <h5 class="mt-2"><img src="icon.svg" class="align-self-center mr-3" alt="coin" width="35" height="35">
+                               Nome: ${api.data[i].name}  ${api.data[i].symbol} </h5>
+                    </div>
+                `;
+
+                topCoin = topCoin + `
+                    <div class="media">
+                        
+                        <div class="media-body">
+                            <h5 class="mt-2"><img src="icon.svg" class="align-self-center mr-3" alt="coin" width="35" height="35">
+                             Nome:  ${api.data[i].name} Simbolo: ${api.data[i].symbol} Data: ${api.data[i].first_historical_data} </h5>
+                    </div>
+                `;
+
+                document.getElementById("coins").innerHTML = texto;
+                document.getElementById("topCoins").innerHTML = topCoin;
+            }
+    })
+    .catch( (error) =>{ console.error(error.message);  });
+        
+    </script>
+    <h1 class="mt-2"> Lista de CryptoCoins</h1>
+    <div id="coins"></div>
+
+    <h1 class="mt-2"> Lista First Historical Data </h1>
+    <div id="topCoins"></div>
+
+</body>
+</html>
